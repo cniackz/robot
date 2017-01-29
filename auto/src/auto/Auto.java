@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.Random;
 import java.util.Scanner;
 import auto.coreActivities;
+import auto.outlookRobot;
 
 public class Auto {
 	
@@ -20,123 +21,62 @@ public class Auto {
 	static int x_IM = 1872;
 	static int y_IM = 808;
 	private static Scanner reader;
-	private static Scanner reader2;
-
-	//-------------------------------------------------------------------------
-	// START: Function to debug
-	//-------------------------------------------------------------------------
-	// It stops the flow until the user agree to continue
-	// 0 = continue
-	public static void stop(){
-		boolean stop = true;
-		reader2 = new Scanner(System.in);
-		System.out.println("type 0 to continue:");
-		while( stop ){
-			int n = reader2.nextInt();
-			if( n == 0 ){
-				stop = false;
-			}
-		}
-	}
-	//-------------------------------------------------------------------------
-	// END: Function to debug
-	//-------------------------------------------------------------------------
-
-	//-------------------------------------------------------------------------
-	// START: Functions to enhance the code
-	//-------------------------------------------------------------------------
-
-	public static void waitProgressBar(int sleepTime) throws InterruptedException{
-		int sleepTimeInSec = sleepTime * 1000;
-		for(int x = 0; x < 10; x++){
-			System.out.print(".");
-			Thread.sleep(sleepTimeInSec/10);
-		}
-		System.out.println("");
-	}
-	//-------------------------------------------------------------------------
-	// END: Functions to enhance the code
-	//-------------------------------------------------------------------------
-
-	public static void pretende() throws AWTException, InterruptedException{
-		coreActivities.nKeysAtSameTime(KeyEvent.VK_WINDOWS);
-		Thread.sleep(3000);
-		coreActivities.escribeUnMensaje("notepad");
-		Thread.sleep(3000);
-		coreActivities.nKeysAtSameTime(KeyEvent.VK_ENTER);
-		Thread.sleep(5000);
-		coreActivities.escribeUnMensaje("Pablo Barba: Estare usando el sistema");
-		Thread.sleep(3000);
-		coreActivities.nKeysAtSameTime(KeyEvent.VK_ALT,KeyEvent.VK_F4);
-		Thread.sleep(3000);
-		coreActivities.nKeysAtSameTime(KeyEvent.VK_ALT,KeyEvent.VK_N);
-		Thread.sleep(3000);
-	}
 
 	public static void uploadLatestModel() 
     throws AWTException, InterruptedException{
 
 		Robot robot = new Robot();
-
-        System.out.println("Outlook");
-        coreActivities.nKeysAtSameTime(KeyEvent.VK_CONTROL,KeyEvent.VK_ALT,KeyEvent.VK_O);
-        waitProgressBar(10);
+		
+		// Open OutLook
+		outlookRobot.openOutlook();
+		
+		// Maximize window
+		coreActivities.windowSize( KeyEvent.VK_X );
+     
+		// Go to OnlineArchive
+		outlookRobot.goToOnlineArchive();
+		
+		// Enter in OnlineArchive
+		// This option will only work if you are connected to Intel network.
+		coreActivities.nKeysAtSameTime(KeyEvent.VK_RIGHT);
+		
+		// Go to the Deleted Items
+		outlookRobot.goToDeletedItems();
         
-        System.out.println("Restore,Move,Size,Minimize,Maximize,Close");
-        coreActivities.nKeysAtSameTime(KeyEvent.VK_ALT,KeyEvent.VK_SPACE);
-        waitProgressBar(2);
+		// Go to My Folders
+		outlookRobot.goToMyFolders();
         
-        System.out.println("Maximize");
-        coreActivities.nKeysAtSameTime(KeyEvent.VK_X);
-        waitProgressBar(2);
-        
-        for(int x = 0; x < 6; x++){
-        	coreActivities.nKeysAtSameTime(KeyEvent.VK_F6);
-        }
-        System.out.println("Inbox");
-        waitProgressBar(2);
-        
-        System.out.println("Outbox");
-        coreActivities.nKeysAtSameTime(KeyEvent.VK_O);
-        waitProgressBar(2);
-        
-        System.out.println("Online Archive");
-        coreActivities.nKeysAtSameTime(KeyEvent.VK_O);
-        waitProgressBar(2);
-        
+		// Enter in My Folders
         coreActivities.nKeysAtSameTime(KeyEvent.VK_RIGHT);
-
-        System.out.println("Deleted Items");
-        coreActivities.nKeysAtSameTime(KeyEvent.VK_DOWN);
-        waitProgressBar(2);
-        
-        System.out.println("My Folders");
-        coreActivities.nKeysAtSameTime(KeyEvent.VK_DOWN);
-        waitProgressBar(2);
-        
-        coreActivities.nKeysAtSameTime(KeyEvent.VK_RIGHT);
+		
+		// Enter in VPG folder
         coreActivities.nKeysAtSameTime(KeyEvent.VK_DOWN);
         coreActivities.nKeysAtSameTime(KeyEvent.VK_RIGHT);
 
+        // Enter in model folder
         for(int x = 0; x < 10; x++){
         	coreActivities.nKeysAtSameTime(KeyEvent.VK_DOWN);
         }
         System.out.println("model");
-        waitProgressBar(2);
-
+        otherActivities.waitProgressBar(2);
         coreActivities.nKeysAtSameTime(KeyEvent.VK_ENTER);
-        
+        otherActivities.waitProgressBar(3);
+		
+        // Go to latest email from gkgn10ds
         System.out.println("gkgn10ds");
         coreActivities.nKeysAtSameTime(KeyEvent.VK_TAB);
-        waitProgressBar(3);
-                
+        otherActivities.waitProgressBar(3);
+		
+        // Start selecting the text
+        // It should select a string like this:
+        // /nfs/site/disks/fm_cnlgt_01526/gkgen10disp/GK_RELEASE_MODELS/disp/gen10_disp_common-16ww53b
         robot.keyPress(KeyEvent.VK_CONTROL);
         coreActivities.nKeysAtSameTime(KeyEvent.VK_DOWN);
         coreActivities.nKeysAtSameTime(KeyEvent.VK_DOWN);
         coreActivities.nKeysAtSameTime(KeyEvent.VK_DOWN);
         coreActivities.nKeysAtSameTime(KeyEvent.VK_DOWN);
         robot.keyRelease(KeyEvent.VK_CONTROL);
-        
+		
         robot.keyPress(KeyEvent.VK_CONTROL);
         coreActivities.nKeysAtSameTime(KeyEvent.VK_RIGHT);
         coreActivities.nKeysAtSameTime(KeyEvent.VK_RIGHT);
@@ -147,43 +87,49 @@ public class Auto {
         coreActivities.nKeysAtSameTime(KeyEvent.VK_END);
         coreActivities.nKeysAtSameTime(KeyEvent.VK_LEFT);
         robot.keyRelease(KeyEvent.VK_SHIFT);
-        waitProgressBar(2);
-        
+        otherActivities.waitProgressBar(2);
+
+        // Copy the path
         System.out.println("copy the path");
         coreActivities.nKeysAtSameTime(KeyEvent.VK_CONTROL,KeyEvent.VK_C);
-        waitProgressBar(30);
-
+        otherActivities.waitProgressBar(30);
+		
         System.out.println("ATS Queue");
         coreActivities.nKeysAtSameTime(KeyEvent.VK_CONTROL,KeyEvent.VK_ALT,KeyEvent.VK_A);
-        waitProgressBar(1);
+        otherActivities.waitProgressBar(1);
         
+		// We are under debug of this process to enhance the code.
+        // Control + Alt + A is not opening ATS Queue.
+		debug.stop();
+		
         System.out.println("Yes");
-        waitProgressBar(5);
+        otherActivities.waitProgressBar(5);
         
         coreActivities.nKeysAtSameTime(KeyEvent.VK_ENTER);
-        waitProgressBar(15);
+        otherActivities.waitProgressBar(15);
 
         System.out.println("Context Management...");
         coreActivities.nKeysAtSameTime(KeyEvent.VK_ALT,KeyEvent.VK_T);
-        waitProgressBar(5);
+        otherActivities.waitProgressBar(5);
         
         coreActivities.nKeysAtSameTime(KeyEvent.VK_M);
         System.out.println("Model Management");
-        waitProgressBar(5);
+        otherActivities.waitProgressBar(5);
 
         for(int x = 0; x<3; x++){
         	coreActivities.nKeysAtSameTime(KeyEvent.VK_TAB);
         }
         coreActivities.nKeysAtSameTime(KeyEvent.VK_ENTER);
         System.out.println("Add Model");
-        waitProgressBar(5);
+        otherActivities.waitProgressBar(5);
         
         coreActivities.nKeysAtSameTime(KeyEvent.VK_CONTROL,KeyEvent.VK_V);
-        
+
+		
         // --------------------------------------------------------------------
         // To complete the command
         // --------------------------------------------------------------------
-        coreActivities.escribeUnMensaje(" -dut glk -tb='-mfe -cf ");
+        coreActivities.writeMessage(" -dut glk -tb='-mfe -cf ");
 
         // --------------------------------------------------------------------
         // To paste model path (Ctrl+V)
@@ -194,7 +140,7 @@ public class Auto {
         // To complete the command
         // --------------------------------------------------------------------
         //        /cfg_env/dut/glk/bin/ModelFrontEnd.xml'
-        coreActivities.escribeUnMensaje("/cfg_env/dut/glk/bin/ModelFrontEnd.xml'");
+        coreActivities.writeMessage("/cfg_env/dut/glk/bin/ModelFrontEnd.xml'");
         
         //---------------------------------------------------------------------
         // Move to Description
@@ -367,11 +313,11 @@ public class Auto {
 		coreActivities.nKeysAtSameTime(KeyEvent.VK_ENTER);
 		if(phrase == ""){
 			for(int cnt = 0; cnt < 10; cnt++){
-				coreActivities.escribeUnMensaje("a");
+				coreActivities.writeMessage("a");
 				Thread.sleep(500);
 			}
 		} else {
-			coreActivities.escribeUnMensaje(phrase);
+			coreActivities.writeMessage(phrase);
 			coreActivities.nKeysAtSameTime(KeyEvent.VK_ENTER);
 		}
 		Thread.sleep(5000);
@@ -613,36 +559,20 @@ public class Auto {
 		System.out.println("5. Pretend that your are typing a respond");
 		System.out.println("6. Control system from Skype commands");
 		System.out.println("7. Test writeMessage");
+		System.out.println("8. Notepad : set message");
 		reader = new Scanner(System.in);
 		int option = reader.nextInt();
-		if(option == 1){
-			uploadLatestModel();
+		switch(option){
+			case 1 : uploadLatestModel(); break;
+			case 2 : keepChanging(); break;
+			case 3 : keepMoving(800); break;
+			case 4 : while(true) respondBack();
+			case 5 : while(true) pretendTyping();
+			case 6 : while(true) controlSystem();
+			case 7 : coreActivities.writeMessage("Hola Cesar Celis"); break;
+			case 8 : notepadRobot.setMessage(); break;
+			default : break;
 		}
-		if(option == 2){
-			keepChanging();
-		}
-		if(option == 3){
-			keepMoving(800);
-		}
-		if(option == 4){
-			while(true){
-				respondBack();
-			}
-		}
-		if(option == 5){
-			while(true){
-				pretendTyping();
-			}
-		}
-		if(option == 6){
-			while(true)
-				controlSystem();
-		}
-		if(option == 7){
-			coreActivities.escribeUnMensaje("Hola Cesar Celis");
-			//
-		}
-
 	}
 
 }
